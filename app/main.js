@@ -16,7 +16,7 @@ export default class main extends Component {
 
     render() {
         return (
-            <View >
+            <View style = {{flex : 1}}>
                 <TouchableWithoutFeedback onPress={this.tickFirstTimer.bind(this)}>
                     <View style={[styles.tabs, styles.rotate180, this.state.firstTimerRunning ? styles.active : styles.passive]}>
                         <CountDown
