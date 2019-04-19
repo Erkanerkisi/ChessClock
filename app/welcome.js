@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View,Button} from 'react-native';
-
-export default class main extends Component {
+import {StyleSheet, Text, View} from 'react-native';
+import TimerTypes from './timeTypes';
+export default class welcome extends Component {
     render() {
         return (
-            <View style = {styles.container}>
-                <Text>Welcome</Text>
-                <Button title="Start"
-                        onPress={() => this.props.navigation.navigate('Home')}
-                />
-            </View>
+                <View style = {styles.container}>
+                
+                    <Text>Welcome</Text>
+                    <TimerTypes
+                    navigation = {this.props.navigation}
+                    title = 'Blitz'
+                    minute = {7}
+                    second = {45}
+                    />
+                </View>
         );
     }
 }

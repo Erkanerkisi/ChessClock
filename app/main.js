@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
 import CountDown from 'react-native-countdown-component';
+import Timer from './timer';
 
 export default class main extends Component {
 
@@ -15,39 +16,30 @@ export default class main extends Component {
     }
 
     render() {
-        return (
-            <View style = {{flex : 1}}>
-                <TouchableWithoutFeedback onPress={this.tickFirstTimer.bind(this)}>
-                    <View style={[styles.tabs, styles.rotate180, this.state.firstTimerRunning ? styles.active : styles.passive]}>
-                        <CountDown
-                            until={60 * this.state.min + this.state.sec}
-                            size={100}
-                            digitStyle={this.state.firstTimerRunning ? styles.active : styles.passive}
-                            digitTxtStyle={this.state.firstTimerRunning ? styles.active : styles.passive}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{ m: '', s: '' }}
-                            running={this.state.firstTimerRunning}
 
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
+        const { navigation } = this.props;
+        const minute = navigation.getParam('minute', 'NO-ID');
+        const second = navigation.getParam('second', 'some default value');
+
+        return (
+            <View style={{ flex: 1 }}>
+                <Timer onPress={this.tickFirstTimer.bind(this)}
+                    style={[styles.tabs, styles.rotate180, this.state.firstTimerRunning ? styles.active : styles.passive]}
+                    until={60 * minute + second}
+                    digitStyle={this.state.firstTimerRunning ? styles.active : styles.passive}
+                    digitTxtStyle={this.state.firstTimerRunning ? styles.active : styles.passive}
+                    running={this.state.firstTimerRunning}
+                />
                 <View style={styles.settings}>
                     <Text>Settings</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={this.tickSecondTimer.bind(this)}>
-                    <View style={[styles.tabs, this.state.secondTimerRunning ? styles.active : styles.passive]}>
-                        <CountDown
-                            until={60 * this.state.min + this.state.sec}
-                            size={100}
-                            digitStyle={this.state.secondTimerRunning ? styles.active : styles.passive}
-                            digitTxtStyle={this.state.secondTimerRunning ? styles.active : styles.passive}
-                            timeToShow={['M', 'S']}
-                            timeLabels={{ m: '', s: '' }}
-                            running={this.state.secondTimerRunning}
-
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
+                <Timer onPress={this.tickSecondTimer.bind(this)}
+                    style={[styles.tabs, this.state.secondTimerRunning ? styles.active : styles.passive]}
+                    until={60 * minute + second}
+                    digitStyle={this.state.secondTimerRunning ? styles.active : styles.passive}
+                    digitTxtStyle={this.state.secondTimerRunning ? styles.active : styles.passive}
+                    running={this.state.secondTimerRunning}
+                />
             </View>
         );
     }
