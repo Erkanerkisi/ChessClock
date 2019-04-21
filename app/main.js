@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
-import CountDown from 'react-native-countdown-component';
+import { StyleSheet, Text, View } from 'react-native';
 import Timer from './timer';
 
 export default class main extends Component {
@@ -9,9 +8,7 @@ export default class main extends Component {
         super(props);
         this.state = {
             firstTimerRunning: false,
-            secondTimerRunning: false,
-            min: 5,
-            sec: 0
+            secondTimerRunning: false
         };
     }
 
@@ -65,19 +62,21 @@ const styles = StyleSheet.create({
         flex: 1
     },
     settings: {
-        flex: 0.5,
+        flex: 0.2,
         backgroundColor: '#444444',
         padding: 10
     },
     active: {
         color: '#FFFFFF',
         backgroundColor: '#FFA500',
-        textAlign: 'center'
+        textAlign: 'center',
+        justifyContent: 'center'
     },
     passive: {
         color: '#000000',
         backgroundColor: '#9C9C9C',
-        textAlign: 'center'
+        textAlign: 'center',
+        justifyContent: 'center'
     },
     rotate180: {
         transform: [{ rotate: '180deg' }]

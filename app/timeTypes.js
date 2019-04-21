@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Button} from 'react-native';
+import { Button, TouchableOpacity,Text } from 'react-native';
 
 export default class timeTypes extends Component {
     constructor(props) {
@@ -8,12 +8,15 @@ export default class timeTypes extends Component {
 
     render() {
         return (
-                <Button title={this.props.title}
-                        onPress={() => this.props.navigation.navigate('Home',{
-                            minute: this.props.minute,
-                            second:this.props.second
-                          })}
-                />
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Home', {
+                minute: this.props.minute,
+                second: this.props.second
+            })}
+            style={this.props.BlockStyle} >
+                <Text style={this.props.TextStyle}>
+                    {this.props.title}
+                </Text>
+            </TouchableOpacity >
         );
     }
 }
