@@ -41,7 +41,7 @@ export default class welcome extends Component {
       
       <View style={styles.MainContainer}>
         <Text style={styles.welcomeText}>Welcome ChessClock</Text>
-        <Text style={styles.text}>Delay Time: {this.state.value}</Text>
+        <Text style={styles.text}>Delay time per player : {this.state.value}</Text>
         <Slider
           style = {styles.slider}
           step={1}
@@ -51,6 +51,7 @@ export default class welcome extends Component {
         />
         <FlatList
           data={this.state.GridViewItems}
+          extraData={this.state}
           renderItem={({ item }) => (
             <TimerTypes
               navigation={this.props.navigation}
