@@ -6,7 +6,6 @@ export default class timeTypes extends Component {
         super(props);
     }
 
-
     render() {
         return (
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Home', {

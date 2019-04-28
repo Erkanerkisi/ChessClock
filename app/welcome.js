@@ -39,9 +39,9 @@ export default class welcome extends Component {
     console.log("delay -> " + this.state.value);
     return (
       
-      <View style={styles.MainContainer}>
+      <View style={styles.container}>
         <Text style={styles.welcomeText}>Welcome ChessClock</Text>
-        <Text style={styles.text}>Delay time per player : {this.state.value}</Text>
+        <Text style={styles.text}>Delay second per player : {this.state.value}</Text>
         <Slider
           style = {styles.slider}
           step={1}
@@ -71,10 +71,7 @@ export default class welcome extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    flex: 1,
-    margin: 10,
-    paddingTop: Platform.OS === "ios" ? 20 : 0
+    backgroundColor : '#CBCBCB'
   },
   GridViewBlockStyle: {
     justifyContent: "center",
@@ -105,6 +102,7 @@ const styles = StyleSheet.create({
   slider: {
     width: '100%',
     marginBottom: 25,
+    marginTop: 10,
     justifyContent: "center",
     alignItems : "center"
   }

@@ -21,6 +21,8 @@ export default class timer extends Component {
                     timeLabels={{ m: "", s: "" }}
                     running={this.props.running}
                     onChange={this.props.onChange}
+                    showSeparator
+                    separatorStyle = {this.props.separatorStyle}
                 />
             </View>
       </TouchableWithoutFeedback>

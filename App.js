@@ -8,7 +8,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    return <AppContainer />;
+    return <AppContainer style = {{backgroundColor : '#CBCBCB'}}/>;
   }
 }
 

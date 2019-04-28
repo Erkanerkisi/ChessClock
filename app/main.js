@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Timer from "./timer";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
+import TickSound from './audio';
 
 export default class main extends Component {
   constructor(props) {
@@ -23,10 +24,6 @@ export default class main extends Component {
   }
 
   render() {
-    console.log("this.state.firstSideRemainingTime -> " + this.state.firstSideRemainingTime);
-    console.log("this.state.firstSideTime -> " + this.state.firstSideTime);
-    console.log("this.state.delayTime -> " + this.state.delayTime);
-    console.log("condition -> " + this.state.firstSideRemainingTime >= this.state.firstSideTime );
     return (
       <View style={{ flex: 1 }}>
         <Timer
@@ -45,7 +42,8 @@ export default class main extends Component {
             this.state.firstTimerRunning ? styles.active : styles.passive
           }
           running={this.state.firstTimerRunning}
-          onChange = {this.onChange.bind(this)}
+          onChange = {this.onChangeFirst.bind(this)}
+          separatorStyle = {styles.separatorStyle}
         />
         <View style={styles.settings}>
             <View style={[styles.center]}>
@@ -66,7 +64,7 @@ export default class main extends Component {
             styles.tabs,
             this.state.secondTimerRunning ? styles.active : styles.passive
           ]}
-          until={this.state.secondSideTime}
+          until={this.state.secondSideRemainingTime}
           digitStyle={
             this.state.secondTimerRunning ? styles.active : styles.passive
           }
@@ -74,40 +72,55 @@ export default class main extends Component {
             this.state.secondTimerRunning ? styles.active : styles.passive
           }
           running={this.state.secondTimerRunning}
+          onChange = {this.onChangeSecond.bind(this)}
+          separatorStyle = {styles.separatorStyle}
         />
       </View>
     );
   }
 
   tickFirstTimer() {
+    TickSound.play();
     this.setState({
       firstTimerRunning: false,
       secondTimerRunning: true
     });
 
-    if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime -1)){
-      console.log("this.state.delayTime -> " + this.state.delayTime);
-      console.log("this.state.firstSideRemainingTime + this.state.delayTime -> " + this.state.firstSideRemainingTime + this.state.delayTime);
+    if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime - this.state.delayTime) 
+        && this.state.delayTime != 0){
         this.setState({
           firstSideRemainingTime: this.state.firstSideRemainingTime + this.state.delayTime
         })
     }
-
+    
   }
 
-  onChange() {
-   console.log("onChange ticked");
+  onChangeFirst() {
    this.setState({
     firstSideRemainingTime : this.state.firstSideRemainingTime - 1
    })
   }
 
+  onChangeSecond() {
+    this.setState({
+      secondSideRemainingTime : this.state.secondSideRemainingTime - 1
+    })
+   }
+
   tickSecondTimer() {
+    TickSound.play();
     this.setState({
       firstTimerRunning: true,
       secondTimerRunning: false
     });
+    if (!(this.state.secondSideRemainingTime >= this.state.secondSideTime - this.state.delayTime) 
+          && this.state.delayTime != 0){
+        this.setState({
+          secondSideRemainingTime: this.state.secondSideRemainingTime + this.state.delayTime
+        })
+    }
   }
+  
   doPause(){
       if(this.state.firstTimerRunning || this.state.secondTimerRunning){
         this.activeSide = this.state.firstTimerRunning ? 'first' : 'second'
@@ -141,7 +154,7 @@ const styles = StyleSheet.create({
   },
   active: {
     color: "#000000",
-    backgroundColor: "#0080FF",
+    backgroundColor: "#3499FF",
     textAlign: "center",
     justifyContent: "center"
   },
@@ -158,5 +171,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1
+  },
+  separatorStyle: {
+    fontSize : 90,
+    height: '67%',
+    width: '100%',
+    color: '#000'
   }
 });
