@@ -20,6 +20,7 @@ export default class timer extends Component {
                     timeToShow={["M", "S"]}
                     timeLabels={{ m: "", s: "" }}
                     running={this.props.running}
+                    onChange={this.props.onChange}
                 />
             </View>
       </TouchableWithoutFeedback>

@@ -7,19 +7,26 @@ import Icon from "react-native-vector-icons/FontAwesome";
 export default class main extends Component {
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
     this.state = {
       firstTimerRunning: false,
       secondTimerRunning: false,
-      isPaused:false
+      isPaused:false,
+      firstSideTime: navigation.getParam("time", "NO-ID"),
+      secondSideTime: navigation.getParam("time", "NO-ID"),
+      firstSideRemainingTime: navigation.getParam("time", "NO-ID"),
+      secondSideRemainingTime: navigation.getParam("time", "NO-ID"),
+      delayTime : navigation.getParam("delay", "NO-ID"),
     };
+
     let activeSide =''
   }
 
   render() {
-    const { navigation } = this.props;
-    const minute = navigation.getParam("minute", "NO-ID");
-    const second = navigation.getParam("second", "some default value");
-
+    console.log("this.state.firstSideRemainingTime -> " + this.state.firstSideRemainingTime);
+    console.log("this.state.firstSideTime -> " + this.state.firstSideTime);
+    console.log("this.state.delayTime -> " + this.state.delayTime);
+    console.log("condition -> " + this.state.firstSideRemainingTime >= this.state.firstSideTime );
     return (
       <View style={{ flex: 1 }}>
         <Timer
@@ -29,7 +36,7 @@ export default class main extends Component {
             styles.tabs,
             this.state.firstTimerRunning ? styles.active : styles.passive
           ]}
-          until={second + 60 * minute }
+          until={this.state.firstSideRemainingTime}
           digitStyle={Object.assign(
             {},
             this.state.firstTimerRunning ? styles.active : styles.passive
@@ -38,6 +45,7 @@ export default class main extends Component {
             this.state.firstTimerRunning ? styles.active : styles.passive
           }
           running={this.state.firstTimerRunning}
+          onChange = {this.onChange.bind(this)}
         />
         <View style={styles.settings}>
             <View style={[styles.center]}>
@@ -58,7 +66,7 @@ export default class main extends Component {
             styles.tabs,
             this.state.secondTimerRunning ? styles.active : styles.passive
           ]}
-          until={60 * minute + second}
+          until={this.state.secondSideTime}
           digitStyle={
             this.state.secondTimerRunning ? styles.active : styles.passive
           }
@@ -76,6 +84,22 @@ export default class main extends Component {
       firstTimerRunning: false,
       secondTimerRunning: true
     });
+
+    if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime -1)){
+      console.log("this.state.delayTime -> " + this.state.delayTime);
+      console.log("this.state.firstSideRemainingTime + this.state.delayTime -> " + this.state.firstSideRemainingTime + this.state.delayTime);
+        this.setState({
+          firstSideRemainingTime: this.state.firstSideRemainingTime + this.state.delayTime
+        })
+    }
+
+  }
+
+  onChange() {
+   console.log("onChange ticked");
+   this.setState({
+    firstSideRemainingTime : this.state.firstSideRemainingTime - 1
+   })
   }
 
   tickSecondTimer() {
