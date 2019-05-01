@@ -51,8 +51,8 @@ export default class main extends Component {
         />
         <View style={styles.settings}>
             <View style={[styles.center]}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('Welcome')}>
-                <Icon name="home" size={50} />
+              <TouchableOpacity>
+                <Icon name="gear" size={50} />
               </TouchableOpacity>
             </View>
             <View style={[styles.center]} >

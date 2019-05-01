@@ -12,9 +12,13 @@ export default class App extends Component<Props> {
   }
 }
 
+const time = 180
+const delay = 0
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: Main, 
+    params: { time: time,delay: delay },
     navigationOptions: {
         header: null
     },
@@ -27,7 +31,7 @@ const AppNavigator = createStackNavigator({
   }
 },
 {
-  initialRouteName: "Welcome"
+  initialRouteName: "Home"
 });
 
 const AppContainer = createAppContainer(AppNavigator);
