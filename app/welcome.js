@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
   FlatList,
   Alert,
@@ -9,17 +8,18 @@ import {
   Slider
 } from "react-native";
 import TimerTypes from "./timeTypes";
+import {AppStyles as styles} from "./AppStyles";
 export default class welcome extends Component {
   constructor(props) {
     super(props);
     this.state = {
       GridViewItems: [
-        { key: "1 min game", min: 1, sec: 0 },
-        { key: "3 min game", min: 3, sec: 0 },
-        { key: "5 min game", min: 5, sec: 0 },
-        { key: "7 min game", min: 7, sec: 0 },
-        { key: "10 min game", min: 10, sec: 0 },
-        { key: "15 min game", min: 15, sec: 0 }
+        { key: "1 min", min: 1, sec: 0 },
+        { key: "3 min", min: 3, sec: 0 },
+        { key: "5 min", min: 5, sec: 0 },
+        { key: "7 min", min: 7, sec: 0 },
+        { key: "10 min", min: 10, sec: 0 },
+        { key: "15 min", min: 15, sec: 0 }
       ],
       value : 0
     };
@@ -67,43 +67,4 @@ export default class welcome extends Component {
       </View>
     );
   }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor : '#CBCBCB'
-  },
-  GridViewBlockStyle: {
-    justifyContent: "center",
-    flex: 1,
-    alignItems: "center",
-    height: 100,
-    margin: 5,
-    backgroundColor: "#05BC87"
-  },
-  GridViewInsideTextItemStyle: {
-    color: "#fff",
-    padding: 10,
-    fontSize: 18,
-    justifyContent: "center"
-  },
-  welcomeText: {
-    color: "#0F2284",
-    padding: 60,
-    fontSize: 30,
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  text: {
-    fontSize: 20,
-    justifyContent: "center",
-    marginLeft:10
-  },
-  slider: {
-    width: '100%',
-    marginBottom: 25,
-    marginTop: 10,
-    justifyContent: "center",
-    alignItems : "center"
-  }
-});
+};

@@ -1,6 +1,42 @@
 import { StyleSheet } from "react-native";
 
 export const AppStyles = StyleSheet.create({
+  container: {
+    backgroundColor : '#CBCBCB'
+  },
+  GridViewBlockStyle: {
+    justifyContent: "center",
+    flex: 1,
+    alignItems: "center",
+    height: 100,
+    margin: 5,
+    backgroundColor: "#05BC87"
+  },
+  GridViewInsideTextItemStyle: {
+    color: "#fff",
+    padding: 10,
+    fontSize: 18,
+    justifyContent: "center"
+  },
+  welcomeText: {
+    color: "#0F2284",
+    padding: 60,
+    fontSize: 30,
+    justifyContent: "center",
+    textAlign: "center"
+  },
+  text: {
+    fontSize: 20,
+    justifyContent: "center",
+    marginLeft:10
+  },
+  slider: {
+    width: '100%',
+    marginBottom: 25,
+    marginTop: 10,
+    justifyContent: "center",
+    alignItems : "center"
+  },
   tabs: {
     flex: 1
   },

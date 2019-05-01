@@ -13,6 +13,7 @@ export default class main extends Component {
     this.state = {
       firstTimerRunning: false,
       secondTimerRunning: false,
+      isFinished: false,
       isPaused:false,
       firstSideTime: navigation.getParam("time", "NO-ID"),
       secondSideTime: navigation.getParam("time", "NO-ID"),
@@ -83,49 +84,66 @@ export default class main extends Component {
   }
 
   tickFirstTimer() {
-    TickSound.play();
-    this.setState({
-      firstTimerRunning: false,
-      secondTimerRunning: true
-    });
 
-    this.unpauseIfPaused();
-
-    if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime - this.state.delayTime) 
-        && this.state.delayTime != 0){
-        this.setState({
-          firstSideRemainingTime: this.state.firstSideRemainingTime + this.state.delayTime
-        })
+    if(!this.state.isFinished) {
+      TickSound.play();
+      this.setState({
+        firstTimerRunning: false,
+        secondTimerRunning: true
+      });
+  
+      this.unpauseIfPaused();
+  
+      if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime - this.state.delayTime) 
+          && this.state.delayTime != 0){
+          this.setState({
+            firstSideRemainingTime: this.state.firstSideRemainingTime + this.state.delayTime
+          })
+      }
     }
-    
   }
 
   onChangeFirst() {
    this.setState({
     firstSideRemainingTime : this.state.firstSideRemainingTime - 1
    })
+
+   if(this.state.firstSideRemainingTime == 0) {
+     this.setState({
+      isFinished: true
+     })
+   }
   }
 
   onChangeSecond() {
     this.setState({
       secondSideRemainingTime : this.state.secondSideRemainingTime - 1
     })
+
+    if(this.state.secondSideRemainingTime == 0) {
+      this.setState({
+       isFinished: true
+      })
+    }
    }
 
   tickSecondTimer() {
-    TickSound.play();
-    this.setState({
-      firstTimerRunning: true,
-      secondTimerRunning: false
-    });
 
-    this.unpauseIfPaused();
-
-    if (!(this.state.secondSideRemainingTime >= this.state.secondSideTime - this.state.delayTime) 
-          && this.state.delayTime != 0){
-        this.setState({
-          secondSideRemainingTime: this.state.secondSideRemainingTime + this.state.delayTime
-        })
+    if(!this.state.isFinished) {
+      TickSound.play();
+      this.setState({
+        firstTimerRunning: true,
+        secondTimerRunning: false
+      });
+  
+      this.unpauseIfPaused();
+  
+      if (!(this.state.secondSideRemainingTime >= this.state.secondSideTime - this.state.delayTime) 
+            && this.state.delayTime != 0){
+          this.setState({
+            secondSideRemainingTime: this.state.secondSideRemainingTime + this.state.delayTime
+          })
+      }
     }
   }
 
