@@ -20,7 +20,9 @@ export default class main extends Component {
       delayTime : navigation.getParam("delay", "NO-ID"),
     };
 
-    let activeSide =''
+    let activeSide ='';
+
+    this.unpauseIfPaused.bind(this);
   }
 
   render() {
@@ -86,6 +88,8 @@ export default class main extends Component {
       secondTimerRunning: true
     });
 
+    this.unpauseIfPaused();
+
     if (!(this.state.firstSideRemainingTime >= this.state.firstSideTime - this.state.delayTime) 
         && this.state.delayTime != 0){
         this.setState({
@@ -113,11 +117,22 @@ export default class main extends Component {
       firstTimerRunning: true,
       secondTimerRunning: false
     });
+
+    this.unpauseIfPaused();
+
     if (!(this.state.secondSideRemainingTime >= this.state.secondSideTime - this.state.delayTime) 
           && this.state.delayTime != 0){
         this.setState({
           secondSideRemainingTime: this.state.secondSideRemainingTime + this.state.delayTime
         })
+    }
+  }
+
+  unpauseIfPaused() {
+    if(this.state.isPaused) {
+      this.setState({
+        isPaused: false
+      });
     }
   }
   
