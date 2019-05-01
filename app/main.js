@@ -52,12 +52,12 @@ export default class main extends Component {
         <View style={styles.settings}>
             <View style={[styles.center]}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate('Welcome')}>
-                <Icon name="home" size={50} />
+                <Icon name="home" size={50} color="#666666"/>
               </TouchableOpacity>
             </View>
             <View style={[styles.center]} >
               <TouchableOpacity onPress = {this.state.isPaused ? this.doPlay.bind(this) : this.doPause.bind(this)}>
-                <Icon name={this.state.isPaused ? "play": "pause"} size={50} />
+                <Icon name={this.state.isPaused ? "play": "pause"} size={50} color="#666666"/>
               </TouchableOpacity>
             </View>
           

@@ -42,7 +42,7 @@ export const AppStyles = StyleSheet.create({
   },
   settings: {
     flex: 0.2,
-    backgroundColor: "#444444",
+    backgroundColor: "#222222",
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: "row"
