@@ -52,7 +52,7 @@ export const AppStyles = StyleSheet.create({
   },
   active: {
     color: "#000000",
-    backgroundColor: "#3499FF",
+    backgroundColor: "#03A9F4",
     textAlign: "center",
     justifyContent: "center"
   },
