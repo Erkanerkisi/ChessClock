@@ -29,7 +29,7 @@ export default class main extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "#222222"}}>
         <Timer
           onPress={this.tickFirstTimer.bind(this)}
           componentStyle={styles.rotate180}

@@ -14,7 +14,7 @@ export default class timer extends Component {
                 <CountDown
                     style = {this.props.componentStyle}
                     until={this.props.until}
-                    size={80}
+                    size={60}
                     digitStyle={this.props.digitStyle}
                     digitTxtStyle={this.props.digitTxtStyle}
                     timeToShow={["M", "S"]}

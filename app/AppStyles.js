@@ -38,7 +38,10 @@ export const AppStyles = StyleSheet.create({
     alignItems : "center"
   },
   tabs: {
-    flex: 1
+    flex: 1,
+    borderWidth: 7,
+    borderColor: "#222222",
+    borderRadius: 20
   },
   settings: {
     flex: 0.2,
@@ -68,9 +71,7 @@ export const AppStyles = StyleSheet.create({
     flex: 1
   },
   separatorStyle: {
-    fontSize : 90,
-    height: '67%',
-    width: '100%',
+    fontSize : 60,
     color: '#000'
   }
 });
