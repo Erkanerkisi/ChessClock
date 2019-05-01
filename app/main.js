@@ -125,6 +125,7 @@ export default class main extends Component {
   }
 
   onChangeFirst() {
+<<<<<<< HEAD
     this.setState({
       firstSideRemainingTime: this.state.firstSideRemainingTime - 1
     });
@@ -134,6 +135,17 @@ export default class main extends Component {
         isFinished: true
       });
     }
+=======
+   this.setState({
+    firstSideRemainingTime : this.state.firstSideRemainingTime - 0.5
+   })
+
+   if(this.state.firstSideRemainingTime == 0) {
+     this.setState({
+      isFinished: true
+     })
+   }
+>>>>>>> change icons
   }
 
   onChangeSecond() {
