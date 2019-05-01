@@ -73,5 +73,10 @@ export const AppStyles = StyleSheet.create({
   separatorStyle: {
     fontSize : 60,
     color: '#000'
+  },
+  timePicker: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: "row"
   }
 });
