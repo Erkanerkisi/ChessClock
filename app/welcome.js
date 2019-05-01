@@ -3,7 +3,6 @@ import {
   View,
   FlatList,
   Alert,
-  Platform,
   Text,
   Slider
 } from "react-native";
