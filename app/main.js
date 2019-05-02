@@ -21,10 +21,9 @@ export default class main extends Component {
       firstSideRemainingTime: navigation.getParam("time", "NO-ID"),
       secondSideRemainingTime: navigation.getParam("time", "NO-ID"),
       delayTime: navigation.getParam("delay", "NO-ID"),
-      dialogVisible: false
+      dialogVisible: false,
+      activeSide: ''
     };
-
-    let activeSide = "";
 
     this.unpauseIfPaused.bind(this);
   }
@@ -100,13 +99,13 @@ export default class main extends Component {
   }
 
   tickFirstTimer() {
-    if (!this.state.isFinished) {
+    if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
       TickSound.play();
       this.setState({
         firstTimerRunning: false,
-        secondTimerRunning: true
+        secondTimerRunning: true,
+        activeSide: 'second'
       });
-
       this.unpauseIfPaused();
 
       if (
@@ -149,11 +148,12 @@ export default class main extends Component {
   }
 
   tickSecondTimer() {
-    if (!this.state.isFinished) {
+    if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
       TickSound.play();
       this.setState({
         firstTimerRunning: true,
-        secondTimerRunning: false
+        secondTimerRunning: false,
+        activeSide: 'first'
       });
 
       this.unpauseIfPaused();
@@ -183,17 +183,17 @@ export default class main extends Component {
 
   doPause() {
     if (this.state.firstTimerRunning || this.state.secondTimerRunning) {
-      this.activeSide = this.state.firstTimerRunning ? "first" : "second";
       this.setState({
         firstTimerRunning: false,
         secondTimerRunning: false,
-        isPaused: true
+        isPaused: true,
+        activeSide: this.state.firstTimerRunning ? 'first' : 'second'
       });
     }
   }
   doPlay() {
     if (!this.state.firstTimerRunning && !this.state.secondTimerRunning) {
-      if (this.activeSide === "first")
+      if (this.state.activeSide === "first")
         this.setState({ firstTimerRunning: true, isPaused: false });
       else this.setState({ secondTimerRunning: true, isPaused: false });
     }
