@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import TickSound from "./audio";
 import { AppStyles as styles } from "./AppStyles";
-import Settings from './settings'
+import Settings from './Settings'
 
 export default class main extends Component {
   constructor(props) {

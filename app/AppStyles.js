@@ -73,10 +73,27 @@ export const AppStyles = StyleSheet.create({
   separatorStyle: {
     fontSize : 60,
     color: '#000'
+  } ,
+  timeTitle: {
+    color: 'black',
+    fontSize: 15,
+    fontWeight: 'bold'
   },
-  timePicker: {
+  timeDesc: {
+    color: 'black',
+    fontSize: 15,
+    paddingTop : 25,
+    paddingBottom : 5
+    },
+  centered: {
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: "row"
-  }
+    justifyContent: 'center'
+  },
+  timeButton: {
+    width: '100%',
+    height: '20%',
+    margin: 5,
+    borderWidth: 1,
+    flexDirection: 'row'
+  },
 });
