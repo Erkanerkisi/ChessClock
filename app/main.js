@@ -22,10 +22,12 @@ export default class main extends Component {
       secondSideRemainingTime: navigation.getParam("time", "NO-ID"),
       delayTime: navigation.getParam("delay", "NO-ID"),
       dialogVisible: false,
-      activeSide: ''
+      activeSide: '',
+      timeType:'Fischer'
     };
 
     this.unpauseIfPaused.bind(this);
+
   }
 
   render() {
@@ -58,7 +60,10 @@ export default class main extends Component {
             <Settings 
               dialogVisible = {this.state.dialogVisible}
               handleCancel = {this.handleCancel}
-              handleDelete = {this.handleDelete}
+              handleSet = {this.handleSet}
+              timeType = {this.state.timeType}
+              time = {this.state.firstSideTime}
+              value={this.state.delayTime}
             />
           </View>
           <View style={[styles.center]}>
@@ -202,10 +207,33 @@ export default class main extends Component {
   handleCancel = () => {
     this.setState({ dialogVisible: false });
   };
-  handleDelete = () => {
-    // The user has pressed the "Delete" button, so here you can do your own logic.
-    // ...Your logic
-    this.setState({ dialogVisible: false });
+  handleSet = (type,hour,minute,second,value) => {
+    /*
+    console.log(type)
+    console.log(hour)
+    console.log(minute)
+    console.log(second)
+    console.log(value)
+    */
+   /*
+   Setting de ayarlamalar yapılınca burdan type a göre Fischer, bronstein veya delay yapısını ayarla
+   maindeki delayTime şuan ekleme için çalışıyor. Delay yapısında bu süre boyunca zamanın akmaması lazım.
+   
+   */
+   console.log(value)
+   let totalSecond = (hour * 60 * 60) +(minute * 60 + second )
+    this.setState({
+       dialogVisible: false,
+       firstTimerRunning: false,
+       secondTimerRunning: false,
+       firstSideTime:totalSecond,
+       secondSideTime:totalSecond,
+       firstSideRemainingTime: totalSecond,
+       secondSideRemainingTime: totalSecond,
+       delayTime:value,
+       activeSide:'',
+       timeType:type
+      });
   };
   openSettings = () => {
     this.setState({ dialogVisible: true });
