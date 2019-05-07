@@ -20,6 +20,8 @@ export default class main extends Component {
       secondSideTime: navigation.getParam("time", "NO-ID"),
       firstSideRemainingTime: navigation.getParam("time", "NO-ID"),
       secondSideRemainingTime: navigation.getParam("time", "NO-ID"),
+      firstSidePreRemainingTime:navigation.getParam("time", "NO-ID"),
+      secondSidePreRemainingTime:navigation.getParam("time", "NO-ID"),
       delayTime: navigation.getParam("delay", "NO-ID"),
       dialogVisible: false,
       activeSide: '',
@@ -27,7 +29,7 @@ export default class main extends Component {
     };
 
     this.unpauseIfPaused.bind(this);
-
+    this.doProcessFactory.bind(this);
   }
 
   render() {
@@ -106,13 +108,24 @@ export default class main extends Component {
   tickFirstTimer() {
     if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
       TickSound.play();
+
+      this.doProcessFactory(this.state.timeType);
+      
       this.setState({
         firstTimerRunning: false,
         secondTimerRunning: true,
         activeSide: 'second'
       });
+      console.log("0: " + this.state.activeSide)
       this.unpauseIfPaused();
+      console.log("4: " + this.state.activeSide)
+    }
+  }
 
+  doProcessFactory = (type) => {
+    // Fisher First Ticker mechanism
+    if (type === "Fischer" && this.state.activeSide === "first"){
+      console.log("1: " + this.state.activeSide)
       if (
         !(
           this.state.firstSideRemainingTime >=
@@ -126,6 +139,89 @@ export default class main extends Component {
         });
       }
     }
+    // Fisher Second Ticker mechanism
+    else if (type === "Fischer" && this.state.activeSide === "second"){
+      console.log("2: " + this.state.activeSide)
+      if (
+        !(
+          this.state.secondSideRemainingTime >=
+          this.state.secondSideTime - this.state.delayTime
+        ) &&
+        this.state.delayTime != 0
+      ) {
+        this.setState({
+          secondSideRemainingTime:
+            this.state.secondSideRemainingTime + this.state.delayTime
+        });
+      }
+
+    }
+    // Bronstein First Ticker mechanism
+    else if (type === "Bronstein" && this.state.activeSide === "first"){
+
+      if (
+        (
+          this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime >= this.state.delayTime
+        ) &&
+        this.state.delayTime != 0
+      ) {
+        let _firstSideRemainingTime = this.state.firstSideRemainingTime + this.state.delayTime;
+        this.setState({
+          firstSideRemainingTime: _firstSideRemainingTime,
+          firstSidePreRemainingTime: _firstSideRemainingTime
+        });
+      }
+      else {
+        if(this.state.delayTime != 0){
+          let _firstSideRemainingTime = this.state.firstSideRemainingTime + (this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime);
+          this.setState({
+            firstSideRemainingTime: _firstSideRemainingTime,
+            firstSidePreRemainingTime: _firstSideRemainingTime
+          });
+        }
+      }
+
+    }
+    else if (type === "Bronstein" && this.state.activeSide === "second"){
+      console.log("secondSidePreRemainingTime: " + this.state.secondSidePreRemainingTime)
+      console.log("secondSideRemainingTime: " + this.state.secondSideRemainingTime)
+      console.log("secondSideRemainingTime: " + this.state.delayTime)
+      if (
+        (
+          this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime >= this.state.delayTime
+        ) &&
+        this.state.delayTime != 0
+      ) {
+
+        let _secondSideRemainingTime = this.state.secondSideRemainingTime + this.state.delayTime;
+        console.log("_secondSideRemainingTime: " + _secondSideRemainingTime)
+        this.setState({
+          secondSideRemainingTime: _secondSideRemainingTime,
+          secondSidePreRemainingTime: _secondSideRemainingTime
+        });
+      }
+      else {
+        if(this.state.delayTime != 0){
+          let _secondSideRemainingTime = this.state.secondSideRemainingTime + (this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime);
+          console.log("_secondSideRemainingTime else: " + _secondSideRemainingTime)
+          this.setState({
+            secondSideRemainingTime: _secondSideRemainingTime,
+            secondSidePreRemainingTime: _secondSideRemainingTime
+          });
+        }
+      }
+
+    }
+    else if ((type === "Delay" && this.state.activeSide === "first")) {
+
+    }
+    else if ((type === "Delay" && this.state.activeSide === "second")) {
+
+    }
+    else{
+
+    }
+
   }
 
   onChangeFirst() {
@@ -155,26 +251,13 @@ export default class main extends Component {
   tickSecondTimer() {
     if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
       TickSound.play();
+      this.doProcessFactory(this.state.timeType);
       this.setState({
         firstTimerRunning: true,
         secondTimerRunning: false,
         activeSide: 'first'
       });
-
       this.unpauseIfPaused();
-
-      if (
-        !(
-          this.state.secondSideRemainingTime >=
-          this.state.secondSideTime - this.state.delayTime
-        ) &&
-        this.state.delayTime != 0
-      ) {
-        this.setState({
-          secondSideRemainingTime:
-            this.state.secondSideRemainingTime + this.state.delayTime
-        });
-      }
     }
   }
 
