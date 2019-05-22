@@ -27,7 +27,7 @@ export default class main extends Component {
       delayTime: navigation.getParam("delay", "NO-ID"),
       dialogVisible: false,
       activeSide: '',
-      timeType:'Fischer',
+      timeType:'Simple',
       x:3
     };
 
@@ -109,14 +109,20 @@ export default class main extends Component {
 
   tickFirstTimer() {
     if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
-      TickSound.play();
       
-
-      console.log("0: " + this.state.activeSide)
       this.unpauseIfPaused();
-      console.log("4: " + this.state.activeSide)
+      TickSound.play();
 
-      if (this.state.timeType === "Fischer"){
+      if(this.state.timeType === "Simple") {
+          this.setState({
+            firstTimerRunning: false,
+            secondTimerRunning: true,
+            firstTimerStyleActive:false,
+            secondTimerStyleActive:true,
+            activeSide: 'second'
+          });
+
+      } else if (this.state.timeType === "Fischer"){
         this.setState({
           firstTimerRunning: false,
           secondTimerRunning: true,
@@ -124,7 +130,7 @@ export default class main extends Component {
           secondTimerStyleActive:true,
           activeSide: 'second'
         });
-        console.log("1: " + this.state.activeSide)
+
         if (
           !(
             this.state.firstSideRemainingTime >=
@@ -214,11 +220,19 @@ export default class main extends Component {
 
   tickSecondTimer() {
     if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
-      TickSound.play();
+      
       this.unpauseIfPaused();
+      TickSound.play();
 
-
-      if (this.state.timeType === "Fischer" ){
+      if(this.state.timeType === "Simple") {
+        this.setState({
+          firstTimerRunning: true,
+          secondTimerRunning: false,
+          firstTimerStyleActive:true,
+          secondTimerStyleActive:false,
+          activeSide: 'first'
+        });
+      } else if (this.state.timeType === "Fischer" ){
         this.setState({
           firstTimerRunning: true,
           secondTimerRunning: false,
@@ -326,7 +340,7 @@ export default class main extends Component {
   handleCancel = () => {
     this.setState({ dialogVisible: false });
   };
-  handleSet = (type,hour,minute,second,value) => {
+  handleSet = (type,minute,value) => {
     /*
     console.log(type)
     console.log(hour)
@@ -340,7 +354,7 @@ export default class main extends Component {
    
    */
    console.log(value)
-   let totalSecond = (hour * 60 * 60) +(minute * 60 + second )
+   let totalSecond = 3600 + (minute * 60 )
     this.setState({
        dialogVisible: false,
        firstTimerRunning: false,

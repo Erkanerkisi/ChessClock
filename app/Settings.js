@@ -9,17 +9,11 @@ export default class settings extends Component {
   constructor(props) {
     super(props);
     console.log(this.props.time);
-    var hours   = Math.floor(this.props.time / 3600);
-    var minutes = Math.floor((this.props.time - (hours * 3600)) / 60);
-    var seconds = this.props.time - (hours * 3600) - (minutes * 60);
-    console.log(hours);
+    var minutes = 3;
     console.log(minutes);
-    console.log(seconds);
     this.state = {
       type: this.props.timeType,
-      selectedHours: hours,
       selectedMinutes: minutes,
-      selectedSeconds: seconds,
       dialogTimeVisible: false,
       value: this.props.value
     };
@@ -29,21 +23,24 @@ export default class settings extends Component {
     this.handleSet = this.props.handleSet.bind(
       this,
       this.state.type,
-      this.state.selectedHours,
       this.state.selectedMinutes,
-      this.state.selectedSeconds,
       this.state.value
     );
-    const types = ["Delay", "Bronstein", "Fischer"];
+
+    const types = ["Simple", "Delay", "Bronstein", "Fischer"];
+    const timingTypes = [1, 3, 5, 10, 15];
+
     const {
-      selectedHours,
       selectedMinutes,
-      selectedSeconds,
       value
     } = this.state;
+
     return (
       <Dialog.Container visible={this.props.dialogVisible}>
         <Dialog.Title>Settings</Dialog.Title>
+        <Text style={styles.timeDesc}>
+          Clock type
+        </Text>
         <SegmentedControls
           options={types}
           onSelection={selectedOption =>
@@ -52,27 +49,15 @@ export default class settings extends Component {
           selectedOption={this.state.type}
         />
         <Text style={styles.timeDesc}>
-          Time Per Player : {selectedHours} h:{selectedMinutes} m:
-          {selectedSeconds} s
+          Time Per Player
         </Text>
-        <View style={[styles.centered, styles.timeButton]}>
-          <View style={{ flex: 0.6, alignItems: "center" }}>
-            <Text style={styles.timeTitle}>VALUE :</Text>
-          </View>
-          <View style={{ flex: 1, alignItems: "center" }}>
-            <TimePicker
-              selectedHours={selectedHours}
-              selectedMinutes={selectedMinutes}
-              onChange={(hours, minutes, seconds) =>
-                this.setState({
-                  selectedHours: hours,
-                  selectedMinutes: minutes,
-                  selectedSeconds: seconds
-                })
-              }
-            />
-          </View>
-        </View>
+        <SegmentedControls
+          options={timingTypes}
+          onSelection={selectedOption =>
+            this.setState({ selectedMinutes: selectedOption })
+          }
+          selectedOption={this.state.selectedMinutes}
+        />
 
         <Text style={styles.timeDesc}>Increment/Delay : {value} s</Text>
 
@@ -82,16 +67,12 @@ export default class settings extends Component {
           </View>
           <View style={{ flex: 1, alignItems: "center" }}>
             <TimePicker
-              selectedHours={selectedHours}
-              selectedMinutes={selectedMinutes}
               selectedSeconds={this.state.value}
-              onChange={(hours, minutes, seconds) =>
+              onChange={(seconds) =>
                 this.setState({
                   value: seconds
                 })
               }
-              hoursUnit=" h"
-              minutesUnit=" m"
               secondsUnit=" s"
               hourVisible={false}
               minuteVisible={false}
