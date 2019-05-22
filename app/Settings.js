@@ -8,12 +8,9 @@ import TimePicker from "./TimePicker";
 export default class settings extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.time);
-    var minutes = 3;
-    console.log(minutes);
     this.state = {
       type: this.props.timeType,
-      selectedMinutes: minutes,
+      selectedMinutes: 3,
       dialogTimeVisible: false,
       value: this.props.value
     };
@@ -31,7 +28,6 @@ export default class settings extends Component {
     const timingTypes = [1, 3, 5, 10, 15];
 
     const {
-      selectedMinutes,
       value
     } = this.state;
 

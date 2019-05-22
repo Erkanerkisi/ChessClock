@@ -22,16 +22,17 @@ export default class main extends Component {
       secondSideTime: navigation.getParam("time", "NO-ID"),
       firstSideRemainingTime: navigation.getParam("time", "NO-ID"),
       secondSideRemainingTime: navigation.getParam("time", "NO-ID"),
-      firstSidePreRemainingTime:navigation.getParam("time", "NO-ID"),
-      secondSidePreRemainingTime:navigation.getParam("time", "NO-ID"),
+      firstSidePreRemainingTime: navigation.getParam("time", "NO-ID"),
+      secondSidePreRemainingTime: navigation.getParam("time", "NO-ID"),
       delayTime: navigation.getParam("delay", "NO-ID"),
       dialogVisible: false,
       activeSide: '',
-      timeType:'Simple',
-      x:3
+      timeType: 'Simple',
+      x: 3
     };
 
-    this.unpauseIfPaused.bind(this);
+    this.unpauseIfPaused = this.unpauseIfPaused.bind(this);
+    this.changeTurn = this.changeTurn.bind(this);
   }
 
   render() {
@@ -61,12 +62,12 @@ export default class main extends Component {
             <TouchableOpacity onPress={this.openSettings}>
               <Icon name="gear" size={50} color="#666666" />
             </TouchableOpacity>
-            <Settings 
-              dialogVisible = {this.state.dialogVisible}
-              handleCancel = {this.handleCancel}
-              handleSet = {this.handleSet}
-              timeType = {this.state.timeType}
-              time = {this.state.firstSideTime}
+            <Settings
+              dialogVisible={this.state.dialogVisible}
+              handleCancel={this.handleCancel}
+              handleSet={this.handleSet}
+              timeType={this.state.timeType}
+              time={this.state.firstSideTime}
               value={this.state.delayTime}
             />
           </View>
@@ -108,28 +109,14 @@ export default class main extends Component {
   }
 
   tickFirstTimer() {
-    if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
-      
+    if (!this.state.isFinished
+      && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
+
       this.unpauseIfPaused();
+      this.changeTurn(false);
       TickSound.play();
 
-      if(this.state.timeType === "Simple") {
-          this.setState({
-            firstTimerRunning: false,
-            secondTimerRunning: true,
-            firstTimerStyleActive:false,
-            secondTimerStyleActive:true,
-            activeSide: 'second'
-          });
-
-      } else if (this.state.timeType === "Fischer"){
-        this.setState({
-          firstTimerRunning: false,
-          secondTimerRunning: true,
-          firstTimerStyleActive:false,
-          secondTimerStyleActive:true,
-          activeSide: 'second'
-        });
+      if (this.state.timeType === "Fischer") {
 
         if (
           !(
@@ -145,54 +132,40 @@ export default class main extends Component {
         }
       }
       // Bronstein First Ticker mechanism
-    else if (this.state.timeType === "Bronstein"){
-      this.setState({
-        firstTimerRunning: false,
-        secondTimerRunning: true,
-        firstTimerStyleActive:false,
-        secondTimerStyleActive:true,
-        activeSide: 'second'
-      });
-      if (
-        (
-          this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime >= this.state.delayTime
-        ) &&
-        this.state.delayTime != 0
-      ) {
-        let _firstSideRemainingTime = this.state.firstSideRemainingTime + this.state.delayTime;
-        this.setState({
-          firstSideRemainingTime: _firstSideRemainingTime,
-          firstSidePreRemainingTime: _firstSideRemainingTime
-        });
-      }
-      else {
-        if(this.state.delayTime != 0){
-          let _firstSideRemainingTime = this.state.firstSideRemainingTime + (this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime);
+      else if (this.state.timeType === "Bronstein") {
+        if (
+          (
+            this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime >= this.state.delayTime
+          ) &&
+          this.state.delayTime != 0
+        ) {
+          let _firstSideRemainingTime = this.state.firstSideRemainingTime + this.state.delayTime;
           this.setState({
             firstSideRemainingTime: _firstSideRemainingTime,
             firstSidePreRemainingTime: _firstSideRemainingTime
           });
         }
+        else {
+          if (this.state.delayTime != 0) {
+            let _firstSideRemainingTime = this.state.firstSideRemainingTime + (this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime);
+            this.setState({
+              firstSideRemainingTime: _firstSideRemainingTime,
+              firstSidePreRemainingTime: _firstSideRemainingTime
+            });
+          }
+        }
+      }
+      else if ((this.state.timeType === "Delay")) {
+        setTimeout(() => {
+          this.setState({
+            secondTimerRunning: true,
+            activeSide: 'second'
+          });
+        }, this.state.delayTime * 1000);
+
       }
     }
-    else if ((this.state.timeType === "Delay" )) {
-      this.setState({
-        firstTimerStyleActive:false,
-        secondTimerStyleActive:true,
-        firstTimerRunning: false
-      });
-      setTimeout(() =>  {
-        this.setState({
-          secondTimerRunning: true,
-          activeSide: 'second'
-        });
-      }, this.state.delayTime*1000);
-      
-    }
-    }
   }
-
-
 
   onChangeFirst() {
     this.setState({
@@ -218,29 +191,27 @@ export default class main extends Component {
     }
   }
 
+  changeTurn(turn) {
+    this.setState({
+      firstTimerRunning: turn,
+      secondTimerRunning: !turn,
+      firstTimerStyleActive: turn,
+      secondTimerStyleActive: !turn,
+      activeSide: turn ? 'first' : 'second'
+    });
+  }
+
   tickSecondTimer() {
-    if (!this.state.isFinished && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
-      
+
+    if (!this.state.isFinished
+      && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
+
       this.unpauseIfPaused();
+      this.changeTurn(true);
       TickSound.play();
 
-      if(this.state.timeType === "Simple") {
-        this.setState({
-          firstTimerRunning: true,
-          secondTimerRunning: false,
-          firstTimerStyleActive:true,
-          secondTimerStyleActive:false,
-          activeSide: 'first'
-        });
-      } else if (this.state.timeType === "Fischer" ){
-        this.setState({
-          firstTimerRunning: true,
-          secondTimerRunning: false,
-          firstTimerStyleActive:true,
-          secondTimerStyleActive:false,
-          activeSide: 'first'
-        });
-        console.log("2: " + this.state.activeSide)
+      if (this.state.timeType === "Fischer") {
+
         if (
           !(
             this.state.secondSideRemainingTime >=
@@ -253,27 +224,18 @@ export default class main extends Component {
               this.state.secondSideRemainingTime + this.state.delayTime
           });
         }
-  
+
       }
 
-      else if (this.state.timeType === "Bronstein" ){
-        this.setState({
-          firstTimerRunning: true,
-          secondTimerRunning: false,
-          firstTimerStyleActive:true,
-          secondTimerStyleActive:false,
-          activeSide: 'first'
-        });
-        console.log("secondSidePreRemainingTime: " + this.state.secondSidePreRemainingTime)
-        console.log("secondSideRemainingTime: " + this.state.secondSideRemainingTime)
-        console.log("secondSideRemainingTime: " + this.state.delayTime)
+      else if (this.state.timeType === "Bronstein") {
+
         if (
           (
             this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime >= this.state.delayTime
           ) &&
           this.state.delayTime != 0
         ) {
-  
+
           let _secondSideRemainingTime = this.state.secondSideRemainingTime + this.state.delayTime;
           console.log("_secondSideRemainingTime: " + _secondSideRemainingTime)
           this.setState({
@@ -282,7 +244,7 @@ export default class main extends Component {
           });
         }
         else {
-          if(this.state.delayTime != 0){
+          if (this.state.delayTime != 0) {
             let _secondSideRemainingTime = this.state.secondSideRemainingTime + (this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime);
             console.log("_secondSideRemainingTime else: " + _secondSideRemainingTime)
             this.setState({
@@ -291,20 +253,16 @@ export default class main extends Component {
             });
           }
         }
-  
+
       }
-      else if ((this.state.timeType === "Delay" )) {
-        this.setState({
-          firstTimerStyleActive:true,
-          secondTimerStyleActive:false,
-          secondTimerRunning: false
-        });
-        setTimeout(() =>  {
+      else if ((this.state.timeType === "Delay")) {
+
+        setTimeout(() => {
           this.setState({
             firstTimerRunning: true,
             activeSide: 'first'
           });
-        }, this.state.delayTime*1000);
+        }, this.state.delayTime * 1000);
       }
     }
   }
@@ -322,53 +280,43 @@ export default class main extends Component {
       this.setState({
         firstTimerRunning: false,
         secondTimerRunning: false,
-        firstTimerStyleActive:false,
-        secondTimerStyleActive:false,
+        firstTimerStyleActive: false,
+        secondTimerStyleActive: false,
         isPaused: true,
         activeSide: this.state.firstTimerRunning ? 'first' : 'second'
       });
     }
   }
+
   doPlay() {
     if (!this.state.firstTimerRunning && !this.state.secondTimerRunning) {
       if (this.state.activeSide === "first")
-        this.setState({ firstTimerRunning: true,firstTimerStyleActive:true, isPaused: false });
-      else this.setState({ secondTimerRunning: true,secondTimerStyleActive:true, isPaused: false });
+        this.setState({ firstTimerRunning: true, firstTimerStyleActive: true, isPaused: false });
+      else this.setState({ secondTimerRunning: true, secondTimerStyleActive: true, isPaused: false });
     }
   }
 
   handleCancel = () => {
     this.setState({ dialogVisible: false });
   };
-  handleSet = (type,minute,value) => {
-    /*
-    console.log(type)
-    console.log(hour)
-    console.log(minute)
-    console.log(second)
-    console.log(value)
-    */
-   /*
-   Setting de ayarlamalar yapılınca burdan type a göre Fischer, bronstein veya delay yapısını ayarla
-   maindeki delayTime şuan ekleme için çalışıyor. Delay yapısında bu süre boyunca zamanın akmaması lazım.
-   
-   */
-   console.log(value)
-   let totalSecond = 3600 + (minute * 60 )
+
+  handleSet = (type, minute, value) => {
+    
+    let totalSecond = 3600 + (minute * 60)
     this.setState({
-       dialogVisible: false,
-       firstTimerRunning: false,
-       secondTimerRunning: false,
-       firstTimerStyleActive:false,
-       secondTimerStyleActive:false,
-       firstSideTime:totalSecond,
-       secondSideTime:totalSecond,
-       firstSideRemainingTime: totalSecond,
-       secondSideRemainingTime: totalSecond,
-       delayTime:value,
-       activeSide:'',
-       timeType:type
-      });
+      dialogVisible: false,
+      firstTimerRunning: false,
+      secondTimerRunning: false,
+      firstTimerStyleActive: false,
+      secondTimerStyleActive: false,
+      firstSideTime: totalSecond,
+      secondSideTime: totalSecond,
+      firstSideRemainingTime: totalSecond,
+      secondSideRemainingTime: totalSecond,
+      delayTime: value,
+      activeSide: '',
+      timeType: type
+    });
   };
   openSettings = () => {
     this.setState({ dialogVisible: true });
