@@ -17,20 +17,20 @@ export default class settings extends Component {
   }
 
   render() {
+    
     this.handleSet = this.props.handleSet.bind(
       this,
       this.state.type,
       this.state.selectedMinutes,
       this.state.value
     );
-
+    
     const types = ["Simple", "Delay", "Bronstein", "Fischer"];
     const timingTypes = [1, 3, 5, 10, 15];
 
     const {
       value
     } = this.state;
-
     return (
       <Dialog.Container visible={this.props.dialogVisible}>
         <Dialog.Title>Settings</Dialog.Title>
@@ -64,7 +64,7 @@ export default class settings extends Component {
           <View style={{ flex: 1, alignItems: "center" }}>
             <TimePicker
               selectedSeconds={this.state.value}
-              onChange={(seconds) =>
+              onChange={(hours, minutes,seconds) =>
                 this.setState({
                   value: seconds
                 })

@@ -109,7 +109,6 @@ export default class TimePicker extends Component {
         onChange(selectedHours, selectedMinutes, selectedSeconds);
       }
     );
-    console.log("Hour : " + itemValue + " - " + this.state.selectedHours);
   };
 
   handleChangeMinutes = itemValue => {
@@ -141,7 +140,6 @@ export default class TimePicker extends Component {
   render() {
     const { selectedHours, selectedMinutes, selectedSeconds } = this.state;
     const {hourVisible,minuteVisible,secondVisible} = this.props;
-    console.log("selectedHours : " + selectedHours + " - " + selectedMinutes);
     return (
       <View style={styles.container}>
         {hourVisible ? (

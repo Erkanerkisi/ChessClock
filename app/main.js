@@ -139,6 +139,7 @@ export default class main extends Component {
           ) &&
           this.state.delayTime != 0
         ) {
+
           let _firstSideRemainingTime = this.state.firstSideRemainingTime + this.state.delayTime;
           this.setState({
             firstSideRemainingTime: _firstSideRemainingTime,
@@ -235,9 +236,7 @@ export default class main extends Component {
           ) &&
           this.state.delayTime != 0
         ) {
-
           let _secondSideRemainingTime = this.state.secondSideRemainingTime + this.state.delayTime;
-          console.log("_secondSideRemainingTime: " + _secondSideRemainingTime)
           this.setState({
             secondSideRemainingTime: _secondSideRemainingTime,
             secondSidePreRemainingTime: _secondSideRemainingTime
@@ -246,7 +245,6 @@ export default class main extends Component {
         else {
           if (this.state.delayTime != 0) {
             let _secondSideRemainingTime = this.state.secondSideRemainingTime + (this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime);
-            console.log("_secondSideRemainingTime else: " + _secondSideRemainingTime)
             this.setState({
               secondSideRemainingTime: _secondSideRemainingTime,
               secondSidePreRemainingTime: _secondSideRemainingTime
@@ -301,8 +299,8 @@ export default class main extends Component {
   };
 
   handleSet = (type, minute, value) => {
-    
-    let totalSecond = 3600 + (minute * 60)
+
+    let totalSecond = (minute * 60);
     this.setState({
       dialogVisible: false,
       firstTimerRunning: false,
@@ -313,6 +311,8 @@ export default class main extends Component {
       secondSideTime: totalSecond,
       firstSideRemainingTime: totalSecond,
       secondSideRemainingTime: totalSecond,
+      firstSidePreRemainingTime: totalSecond,
+      secondSidePreRemainingTime: totalSecond,
       delayTime: value,
       activeSide: '',
       timeType: type
