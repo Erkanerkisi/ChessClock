@@ -318,6 +318,7 @@ export default class main extends Component {
       timeType: type
     });
   };
+  
   openSettings = () => {
     this.setState({ dialogVisible: true });
   };
