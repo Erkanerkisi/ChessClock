@@ -113,11 +113,11 @@ export default class main extends Component {
       && (this.state.activeSide == '' || this.state.activeSide == 'first')) {
 
       this.unpauseIfPaused();
-      this.changeTurn(false);
+      
       TickSound.play();
 
       if (this.state.timeType === "Fischer") {
-
+        this.changeTurn(false);
         if (
           !(
             this.state.firstSideRemainingTime >=
@@ -133,6 +133,7 @@ export default class main extends Component {
       }
       // Bronstein First Ticker mechanism
       else if (this.state.timeType === "Bronstein") {
+        this.changeTurn(false);
         if (
           (
             this.state.firstSidePreRemainingTime - this.state.firstSideRemainingTime >= this.state.delayTime
@@ -157,13 +158,23 @@ export default class main extends Component {
         }
       }
       else if ((this.state.timeType === "Delay")) {
-        setTimeout(() => {
+        console.log("Delay");
+        this.clearTimer(this.firstTimerHandle);
+        this.setState({
+          firstTimerRunning: false,
+          firstTimerStyleActive: false,
+          secondTimerRunning: false,
+          secondTimerStyleActive: true,
+          activeSide: 'second'
+        });
+        this.secondTimerHandle = setTimeout(() => {
+          console.log("secondTimerHandle is processed?");
           this.setState({
             secondTimerRunning: true,
             activeSide: 'second'
           });
         }, this.state.delayTime * 1000);
-
+        console.log("secondTimerHandle finish");
       }
     }
   }
@@ -208,11 +219,10 @@ export default class main extends Component {
       && (this.state.activeSide == '' || this.state.activeSide == 'second')) {
 
       this.unpauseIfPaused();
-      this.changeTurn(true);
       TickSound.play();
 
       if (this.state.timeType === "Fischer") {
-
+        this.changeTurn(true);
         if (
           !(
             this.state.secondSideRemainingTime >=
@@ -229,7 +239,7 @@ export default class main extends Component {
       }
 
       else if (this.state.timeType === "Bronstein") {
-
+        this.changeTurn(true);
         if (
           (
             this.state.secondSidePreRemainingTime - this.state.secondSideRemainingTime >= this.state.delayTime
@@ -254,8 +264,16 @@ export default class main extends Component {
 
       }
       else if ((this.state.timeType === "Delay")) {
-
-        setTimeout(() => {
+        console.log("Delay");
+        this.clearTimer(this.secondTimerHandle);
+        this.setState({
+          secondTimerRunning: false,
+          secondTimerStyleActive: false,
+          firstTimerRunning: false,
+          firstTimerStyleActive: true,
+          activeSide: 'first'
+        });
+        this.firstTimerHandle = setTimeout(() => {
           this.setState({
             firstTimerRunning: true,
             activeSide: 'first'
@@ -264,6 +282,11 @@ export default class main extends Component {
       }
     }
   }
+
+clearTimer = (timer) =>{
+  if (timer) 
+  {clearTimeout(timer);}
+}
 
   unpauseIfPaused() {
     if (this.state.isPaused) {
@@ -318,7 +341,7 @@ export default class main extends Component {
       timeType: type
     });
   };
-  
+
   openSettings = () => {
     this.setState({ dialogVisible: true });
   };
