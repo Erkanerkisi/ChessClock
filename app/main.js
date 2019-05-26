@@ -116,7 +116,7 @@ export default class main extends Component {
       
       TickSound.play();
 
-      if (this.state.timeType === "Fischer") {
+      if (this.state.timeType === "Fischer" || this.state.timeType === "Simple") {
         this.changeTurn(false);
         if (
           !(
@@ -221,7 +221,8 @@ export default class main extends Component {
       this.unpauseIfPaused();
       TickSound.play();
 
-      if (this.state.timeType === "Fischer") {
+      if (this.state.timeType === "Fischer" 
+          || this.state.timeType === "Simple" ) {
         this.changeTurn(true);
         if (
           !(
